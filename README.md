@@ -49,4 +49,9 @@ python keyboardBuilder4eS.py
 You can access the app in your browser by navigation to `http://127.0.0.1:5000`
 
 ## Usage
-If you want to import an already existing virtual keyboard (e.g. in *Transkribus*) to eScriptorium you can use the Keyboard Builder like this: Simply paste all Unicodes of your existing keyboard in a new Transkribus document without any whitespaces between them. Copy the resulting string (e.g. `£q«±²ſœē∓ↄ`) and paste this string to the "Paste character(s) here" field of the Keyboard Builder. Click on the "Add Character(s)" button and every single unique character of the string will be added to your custom keyboard.
+If you want to import an already existing virtual keyboard (e.g. in *Transkribus*) to eScriptorium you can use the Keyboard Builder like this: 
+
+1. Simply paste all Unicodes of your existing keyboard in a new Transkribus document without any whitespaces between them.
+2. Copy the resulting string (e.g. `£q«±²ſœē∓ↄ`) 
+3. Paste this string to the "Paste character(s) here" field of the Keyboard Builder.
+4. Click on the "Add Character(s)" button and every single unique character of the string will be added to your custom keyboard.
