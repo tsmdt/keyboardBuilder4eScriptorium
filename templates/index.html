@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unicode Character Finder</title>
+    <style>
+         @font-face {
+            font-family: 'Junicode2';
+            src: url('/static/fonts/Junicode-Regular.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        body {
+            font-family: 'Junicode2', Arial, sans-serif;
+            margin: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        .content-container {
+            box-sizing: border-box;
+        }
+
+        .grid-wrapper {
+            display: flex;
+            justify-content: center;
+            width: 100%;
+        }
+
+        .character-grid {
+            display: grid;
+            gap: 10px;
+            margin-bottom: 20px;
+            margin-top: 20px;
+            justify-content: center;
+        }
+
+        .unicode-grid {
+            display: grid;
+            grid-template-columns: repeat(10, 50px); /* Ensure 10 columns */
+            gap: 10px;
+            margin-bottom: 20px;
+            margin-top: 20px;
+            justify-content: center;
+        }
+
+        .character-cell {
+            font-family: 'Junicode2', Arial, sans-serif;
+            border: 1px solid #000;
+            background-color:floralwhite;
+            text-align: center;
+            line-height: 50px;
+            cursor: pointer;
+            font-size: 24px;
+        }
+
+        .selected-character {
+            background-color:greenyellow;
+        }
+
+        .button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color:darkolivegreen;
+            color: white;
+            border: 0px;
+            border-radius: 5px;
+            margin-right: 5px;
+            margin-left: 5px;
+        }
+
+        .button-container {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .input-container {
+            display: flex;
+            gap: 10px;
+            position: relative; 
+            justify-content: center;
+            align-items: center;
+        }
+
+        .input-row {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .match-field {
+            color: #000000a4;
+            padding: 10px;
+            font-size: 16px;
+            width: 180px;
+            border-radius: 5px;
+            background-color:lavender;
+            border: 0;
+        }
+
+        .search-field {
+            padding: 10px;
+            font-size: 16px;
+            width: 180px;
+            border-radius: 5px;
+            background-color:gold;
+            border: 0;
+            position: relative;
+        }
+
+        .dropdown-container {
+            margin-left: 0px;
+            margin-top: 0px;
+            border-radius: 5px;
+        }
+
+        .category-dropdown {
+            padding: 8px;
+            font-size: 16px;
+            width: 180px;
+            border-radius: 5px;
+            background-color:coral;
+        }
+
+        .suggestion-item {
+            font-family: 'Junicode2', Arial, sans-serif;
+            font-size: 18px;
+            padding: 5px;
+            cursor: pointer;
+            border: 1px solid #ccc;
+        }
+
+        .suggestion-item:hover {
+            background-color: rgb(255, 229, 82);
+        }
+
+        #suggestions {
+            position: absolute;
+            background: gold;
+            max-height: 200px;
+            overflow-y: auto;
+            margin-top: 260px;
+            margin-left: 344px;
+            width: 60%; 
+            z-index: 1000; 
+        }
+
+        .expandable-text {
+            margin-bottom: 20px;
+            text-align: center; /* Center the text summary */
+        }
+
+        .expandable-text-summary {
+            margin-top: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 32px;
+            color: #007BFF;
+        }
+
+        .expandable-text-content {
+            font-family: monospace;
+            line-height: 18pt;
+            font-size: 15px;
+            display: none;
+            max-width: 620px;
+            margin-top: 10px;
+            margin-left: auto;
+            margin-right: auto;
+            text-align: center;
+        }
+
+        .expandable-text.open .expandable-text-content {
+            display:block;
+        }
+    </style>
+</head>
+<body>
+    <div class="content-container">
+        <div class="expandable-text" id="readme">
+            <div class="expandable-text-summary" onclick="toggleReadme()">Virtual Keyboard Builder for eScriptorium 🌞</div>
+            <div class="expandable-text-content">
+                <p>
+                    This app allows you to build virtual keyboards for <a href="https://en.wikipedia.org/wiki/EScriptorium" target="_blank">eScriptorium</a>.<br><br>
+                    You can <span style="font-weight: bold">filter</span> by Unicode categories using the <span style="font-weight: bold; color:coral;">dropdown menu</span>, 
+                    <span style="font-weight: bold">search</span> for a Unicode character by <span style="font-weight: bold; color:rgb(221, 190, 16);">name</span> or simple 
+                    <span style="font-weight: bold">paste</span> and <span style="font-weight: bold; color:rgb(143, 143, 173);">match</span> a character or string of characters and add them to your custom keyboard.<br><br>
+                    The latter option makes building already existing virtual keyboards (e.g. in Transkribus) especially easy: Simply paste all Unicodes of your existing keyboard in a new Transkribus document 
+                    without any whitespaces between them. Copy the resulting string (e.g. <span style="font-family: monospace; color:blue; letter-spacing: 3px;">£q«±²ſœŒē∓ↄ</span>) and paste this string to the <span style="font-weight: bold; color:rgb(143, 143, 173);">"Paste character(s) here"</span> field.
+                    Click on <span style="font-weight: bold; color:rgb(143, 143, 173);">match</span> and every single character of the string will be added to your custom keyboard.<br><br>
+                    * Use the buttons <span style="font-weight: bold">Previous</span> and <span style="font-weight: bold">Next</span> to browse through the Unicode characters.<br><br>
+                    * <span style="font-weight: bold">Click</span> on a Unicode character in the grid to <span style="font-weight: bold">add</span> it to your custom keyboard.<br><br>
+                    * <span style="font-weight: bold">Remove</span> an already added character by clicking on it again in your custom keyboard.<br><br>
+                    * <span style="font-weight: bold">Change the order</span> of your custom keyboard by dragging and droping a certain Unicode character to the position you like.<br><br>
+                    * <span style="font-weight: bold">Download</span> your custom keyboard by clicking on the button <span style="font-weight: bold; color:darkolivegreen;">Download JSON</span> and import the .json into eScriptorium.<br><br>
+                </p>
+            </div>
+        </div>
+        <div class="input-row">
+            <div class="input-container">
+                <input type="text" id="char-input" class="match-field" placeholder="Paste character(s) here">
+                <button class="button" onclick="matchCharacter()">Match</button>
+                <input type="text" id="name-input" class="search-field" placeholder="Search by Unicode name" oninput="liveSearchUnicodeName()">
+                <div id="suggestions"></div>
+                <div class="dropdown-container">
+                    <select id="category-select" class="category-dropdown" onchange="filterByCategory()"></select>
+                </div>
+            </div>
+        </div>
+        <div class="grid-wrapper">
+            <div class="character-grid" id="unicode-grid"></div>
+        </div>
+        <div class="character-grid" id="character-grid"></div>
+        <div class="button-container">
+            <button class="button" onclick="prevPage()">←</button>
+            <button class="button" onclick="nextPage()">→</button>
+            <button class="button" onclick="clearCharacters()">Clear Characters</button>
+            <button class="button" onclick="increaseLimit()">+</button>
+            <button class="button" onclick="decreaseLimit()">-</button>
+            <button class="button" onclick="downloadJson()">Download JSON</button>
+        </div>        
+        <script>
+            let row = 0;
+            let column = 0;
+            let currentPage = 0;
+            let rowLimit = 10;
+            let selectedCategory = ''; 
+            const pageSize = 40;
+            const unicodeGrid = document.getElementById('unicode-grid');
+            const characterGrid = document.getElementById('character-grid');
+
+            function toggleReadme() {
+                const readme = document.getElementById('readme');
+                readme.classList.toggle('open');
+            }
+
+            function addCharacter(character) {
+                fetch('/add_character', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ row, column, character })
+                }).then(response => response.json())
+                .then(data => {
+                    console.log(data);
+                    if (column < rowLimit - 1) {
+                        column++;
+                    } else {
+                        column = 0;
+                        row++;
+                    }
+                    renderSelectedCharacters();
+                });
+            }
+
+            function increaseLimit() {
+                rowLimit++;
+                console.log(`Row limit increased to: ${rowLimit}`);
+                updateRowLimit(rowLimit);
+                renderSelectedCharacters(); // Re-render characters to apply new limit
+            }
+
+            function decreaseLimit() {
+                if (rowLimit > 1) { // Ensure the limit doesn't go below 1
+                    rowLimit--;
+                    console.log(`Row limit decreased to: ${rowLimit}`);
+                    updateRowLimit(rowLimit);
+                    renderSelectedCharacters(); // Re-render characters to apply new limit
+                }
+            }
+
+            function updateRowLimit(newLimit) {
+                fetch('/update_row_limit', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ row_limit: newLimit })
+                }).then(response => response.json())
+                .then(data => {
+                    console.log(`Row limit updated to: ${newLimit}`);
+                });
+            }
+
+            function removeCharacter(character) {
+                fetch('/remove_character', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ character })
+                }).then(response => response.json())
+                .then(data => {
+                    console.log(data);
+                    renderSelectedCharacters(); // Re-render the updated character list
+                });
+            }
+
+            function renderUnicodeCharacters(page, category = '') {
+                const start = page * pageSize;
+                fetch(`/get_unicode_characters?start=${start}&limit=${pageSize}&category=${encodeURIComponent(category)}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        const unicodeGrid = document.getElementById('unicode-grid');
+                        unicodeGrid.innerHTML = '';
+
+                        // Set the CSS grid template columns to ensure 10 columns
+                        unicodeGrid.style.gridTemplateColumns = `repeat(10, 50px)`;
+
+                        data.forEach(item => {
+                            const cell = document.createElement('div');
+                            cell.className = 'character-cell';
+                            cell.textContent = item.character; // Assuming each item has a 'character' property
+                            cell.title = item.name; // Set the title attribute for the tooltip
+                            cell.onclick = () => addCharacter(item.character);
+                            unicodeGrid.appendChild(cell);
+                        });
+                    });
+            }
+
+            function renderSelectedCharacters() {
+                fetch('/get_characters')
+                    .then(response => response.json())
+                    .then(data => {
+                        const characters = data.characters;
+                        characterGrid.innerHTML = '';
+                        
+                        // Set the CSS grid template columns based on rowLimit
+                        characterGrid.style.gridTemplateColumns = `repeat(${rowLimit}, 50px)`;
+
+                        characters.forEach((charObj, index) => {
+                            const cell = document.createElement('div');
+                            cell.className = 'character-cell selected-character';
+                            cell.textContent = charObj.character;
+                            cell.id = `char-${index}`;
+                            cell.draggable = true;
+                            cell.ondragstart = drag;
+                            cell.ondragover = allowDrop;
+                            cell.ondrop = drop;
+                            cell.onclick = () => removeCharacter(charObj.character);
+                            characterGrid.appendChild(cell);
+                        });
+                    });
+            }
+
+            function downloadJson() {
+                fetch('/download_characters')
+                    .then(response => response.json())
+                    .then(data => {
+                        const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+                        const url = URL.createObjectURL(blob);
+                        const a = document.createElement('a');
+                        a.href = url;
+                        a.download = 'my_keyboard.json';
+                        document.body.appendChild(a);
+                        a.click();
+                        document.body.removeChild(a);
+                        URL.revokeObjectURL(url);
+                    });
+            }
+
+            function clearCharacters() {
+                fetch('/clear_characters', {
+                    method: 'POST'
+                }).then(response => response.json())
+                .then(data => {
+                    console.log(data);
+                    row = 0;
+                    column = 0;
+                    renderSelectedCharacters();
+                });
+            }
+
+            function prevPage() {
+                if (currentPage > 0) {
+                    currentPage--;
+                    renderUnicodeCharacters(currentPage, selectedCategory); 
+                }
+            }
+
+            function nextPage() {
+                currentPage++;
+                renderUnicodeCharacters(currentPage, selectedCategory);  
+            }
+
+            function matchCharacter() {
+                const charInput = document.getElementById('char-input').value;
+
+                fetch('/match_character', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ characters: charInput })
+                }).then(response => response.json())
+                .then(data => {
+                    if (data.valid_characters.length > 0) {
+                        renderSelectedCharacters(); // Re-render the updated character list
+                    } else {
+                        alert('No valid characters found in the provided string.');
+                    }
+                });
+            }
+
+            function filterByCategory() {
+                selectedCategory = document.getElementById('category-select').value; 
+                currentPage = 0; 
+                renderUnicodeCharacters(currentPage, selectedCategory);  
+            }
+
+            function populateCategories() {
+                fetch('/get_unicode_categories')
+                    .then(response => response.json())
+                    .then(data => {
+                        const categorySelect = document.getElementById('category-select');
+                        categorySelect.innerHTML = '<option value="">All Unicodes</option>';
+                        data.forEach(category => {
+                            const option = document.createElement('option');
+                            option.value = category;
+                            option.textContent = category;
+                            categorySelect.appendChild(option);
+                        });
+                    });
+            }
+
+            document.addEventListener('DOMContentLoaded', () => {
+                populateCategories();
+                renderUnicodeCharacters(currentPage, selectedCategory);  
+                renderSelectedCharacters();
+            });
+
+            function allowDrop(event) {
+                event.preventDefault();
+            }
+
+            function drag(event) {
+                event.dataTransfer.setData("text/plain", event.target.id);
+            }
+
+            function drop(event) {
+                event.preventDefault();
+                const data = event.dataTransfer.getData("text/plain");
+                const draggedElement = document.getElementById(data);
+                const dropTarget = event.target;
+
+                if (dropTarget.classList.contains('character-cell')) {
+                    const parent = dropTarget.parentNode;
+                    const draggedIndex = Array.from(parent.children).indexOf(draggedElement);
+                    const dropIndex = Array.from(parent.children).indexOf(dropTarget);
+
+                    if (draggedIndex < dropIndex) {
+                        parent.insertBefore(draggedElement, dropTarget.nextSibling);
+                    } else {
+                        parent.insertBefore(draggedElement, dropTarget);
+                    }
+
+                    updateCustomOrder();
+                }
+            }
+
+            function updateCustomOrder() {
+                const customOrder = [];
+                const characterCells = document.querySelectorAll('#character-grid .character-cell');
+                characterCells.forEach(cell => {
+                    customOrder.push(cell.textContent);
+                });
+
+                fetch('/update_custom_order', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ order: customOrder })
+                }).then(response => response.json())
+                .then(data => {
+                    console.log(data);
+                    renderSelectedCharacters(); 
+                });
+            }
+
+            document.getElementById('name-input').addEventListener('blur', function() {
+                setTimeout(hideSuggestions, 100); 
+            });
+
+            function hideSuggestions() {
+                const suggestionsDiv = document.getElementById('suggestions');
+                suggestionsDiv.innerHTML = '';
+            }
+
+            function debounce(func, delay) {
+                let timeout;
+                return function(...args) {
+                    clearTimeout(timeout);
+                    timeout = setTimeout(() => func.apply(this, args), delay);
+                };
+            }
+
+            const liveSearchUnicodeName = debounce(function() {
+                const nameInput = document.getElementById('name-input').value;
+                fetch('/live_search_unicode_name', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ partial_name: nameInput })
+                }).then(response => response.json())
+                .then(data => {
+                    const suggestionsDiv = document.getElementById('suggestions');
+                    suggestionsDiv.innerHTML = '';
+
+                    data.forEach(item => {
+                        const suggestion = document.createElement('div');
+                        suggestion.textContent = `${item.name} (${item.character})`;
+                        suggestion.className = 'suggestion-item';
+                        suggestion.onclick = () => {
+                            addCharacter(item.character);
+                            suggestionsDiv.innerHTML = '';
+                            document.getElementById('name-input').value = '';
+                        };
+                        suggestionsDiv.appendChild(suggestion);
+                    });
+                });
+            }, 300);
+        </script>  
+    </div>
+</body>
+</html>
