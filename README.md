@@ -6,7 +6,7 @@ The Keyboard Builder comes with a **set of useful features**:
 * `Filter` by Unicode categories (e.g. `Greek and Coptic`, `Hebrew`, `Latin Extended-A` ...) for easier access to the Unicode range you have in mind
 * `Search` for a specific Unicode by name (e.g. `"Greek Capital Letter Omega"`). You don't have to memorize the complete name, a part is enough (e.g. `Greek Cap`) ... 
 * `Paste` a **single** Unicode character you copied elsewhere and add it to your keyboard
-* `Paste` a **string** of Unicode characters (e.g. `£q«±²ſē∓ↄ`) and add each individual character to your keyboard
+* `Paste` a **string** of Unicode characters (e.g. `£q«±²ſē∓ↄ`) and add each individual character to your keyboard automatically
 * Adjust the `order` of your keyboard via **drag** and **drop**
 * Adjust the `layout` of your keyboard by increasing or decreasing the  column width of your grid (i.e. you can design a keyboard layout in a `2 x 10` grid or `4 x 5` and so forth...)
 * `Download` your keyboard as an eScriptorium compatible `.json` file
