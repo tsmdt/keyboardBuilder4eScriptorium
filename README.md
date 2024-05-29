@@ -13,31 +13,34 @@ The Keyboard Builder comes with a **set of useful functions**:
 
 ## Table of Contents
 1. [Requirements](#requirements)
-2. Installation
+2. [Installation](#installation)
 3. Usage
 
 ## Requirements
 - Python 3.11 and above
 
 ## Installation
-#### 1. Clone this repository and change to project folder
+#### 1. Clone this repository
 ```shell
 git clone https://github.com/th-schmidt/keyboardBuilder4eScriptorium/
+```
+#### 2. Change to the project folder
+```shell
 cd keyboardBuilder4eScriptorium
 ```
-#### 2. Create a Python virtual environment
+#### 3. Create a Python virtual environment
 ```python
 python3.11 -m venv venv
 ```
-#### 3. Activate your virtual environment
+#### 4. Activate your virtual environment
 ```shell
 source venv/bin/activate
 ```
-#### 4. Install dependencies
+#### 5. Install dependencies
 ```python
 pip install -r requirements.txt
 ```
-#### 5. Run the app
+#### 6. Run the app
 ```python
 python keyboardBuilder4eS.py
 ```
