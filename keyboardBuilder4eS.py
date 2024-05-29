@@ -6,13 +6,6 @@ from flask import Flask, request, jsonify, session, render_template
 app = Flask(__name__)
 app.secret_key = os.urandom(24)
 
-json_template = {
-    "version": "0.1",
-    "name": "my_keyboard",
-    "author": "Virtual Keyboard Builder for eScriptorium v0.1",
-    "characters": []
-}
-
 unicode_category_ranges = {
     "Basic Latin": (0x0000, 0x007F),
     "Latin-1 Supplement": (0x0080, 0x00FF),
@@ -308,14 +301,27 @@ def match_character():
     if 'custom_characters' not in session:
         session['custom_characters'] = []
 
+    custom_characters = session['custom_characters']
+
+    # Add the new characters to the session
     for char in valid_characters:
-        session['custom_characters'].append({
+        custom_characters.append({
             'character': char,
-            'row': 0,  
+            'row': 0,
             'column': 0
         })
 
-    session.modified = True 
+    # Get the current row limit from the session
+    row_limit = session.get('row_limit', 10)
+
+    # Recalculate rows and columns
+    for i, char_obj in enumerate(custom_characters):
+        char_obj['row'] = i // row_limit
+        char_obj['column'] = i % row_limit
+
+    session['custom_characters'] = custom_characters
+    session.modified = True
+
     return jsonify({"message": "Characters matched and added successfully!", "valid_characters": valid_characters})
 
 @app.route('/update_custom_order', methods=['POST'])
@@ -352,16 +358,36 @@ def update_row_limit():
     for i, char_obj in enumerate(custom_characters):
         char_obj['row'] = i // row_limit
         char_obj['column'] = i % row_limit
+        
     session['custom_characters'] = custom_characters
-
     session.modified = True
+    
     return jsonify({"status": "success", "row_limit": row_limit})
+
+@app.route('/recalculate_rows_columns', methods=['POST'])
+def recalculate_rows_columns():
+    custom_characters = session.get('custom_characters', [])
+    row_limit = session.get('row_limit', 10)
+
+    # Recalculate rows and columns
+    for i, char_obj in enumerate(custom_characters):
+        char_obj['row'] = i // row_limit
+        char_obj['column'] = i % row_limit
+
+    session['custom_characters'] = custom_characters
+    session.modified = True
+
+    return jsonify({"status": "success"})
 
 @app.route('/download_characters', methods=['GET'])
 def download_characters():
     custom_characters = session.get('custom_characters', [])
-    json_data = json_template
-    json_data["characters"] = custom_characters
+    json_data = {
+        "version": "0.1",
+        "name": "my_keyboard",
+        "author": "Virtual Keyboard Builder for eScriptorium v0.1",
+        "characters": custom_characters
+        }
     return jsonify(json_data)
 
 if __name__ == '__main__':

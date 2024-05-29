@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Unicode Character Finder</title>
+    <title>Virtual Keyboard Builder for eScriptorium</title>
     <style>
          @font-face {
             font-family: 'Junicode2';
@@ -14,7 +14,7 @@
 
         body {
             font-family: 'Junicode2', Arial, sans-serif;
-            margin: 20px;
+            margin: 10px;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -44,7 +44,7 @@
 
         .unicode-grid {
             display: grid;
-            grid-template-columns: repeat(10, 50px); /* Ensure 10 columns */
+            grid-template-columns: repeat(14, 50px); /* Ensure 10 columns */
             gap: 10px;
             margin-bottom: 20px;
             margin-top: 20px;
@@ -189,20 +189,21 @@
 <body>
     <div class="content-container">
         <div class="expandable-text" id="readme">
-            <div class="expandable-text-summary" onclick="toggleReadme()">Virtual Keyboard Builder for eScriptorium 🌞</div>
+            <div class="expandable-text-summary" onclick="toggleReadme()">Virtual Keyboard Builder for eScriptorium</div>
             <div class="expandable-text-content">
                 <p>
                     This app allows you to build virtual keyboards for <a href="https://en.wikipedia.org/wiki/EScriptorium" target="_blank">eScriptorium</a>.<br><br>
                     You can <span style="font-weight: bold">filter</span> by Unicode categories using the <span style="font-weight: bold; color:coral;">dropdown menu</span>, 
                     <span style="font-weight: bold">search</span> for a Unicode character by <span style="font-weight: bold; color:rgb(221, 190, 16);">name</span> or simple 
-                    <span style="font-weight: bold">paste</span> and <span style="font-weight: bold; color:rgb(143, 143, 173);">match</span> a character or string of characters and add them to your custom keyboard.<br><br>
+                    <span style="font-weight: bold">paste</span> and <span style="font-weight: bold; color:rgb(143, 143, 173);">add</span> a character or string of characters to your custom keyboard.<br><br>
                     The latter option makes building already existing virtual keyboards (e.g. in Transkribus) especially easy: Simply paste all Unicodes of your existing keyboard in a new Transkribus document 
                     without any whitespaces between them. Copy the resulting string (e.g. <span style="font-family: monospace; color:blue; letter-spacing: 3px;">£q«±²ſœŒē∓ↄ</span>) and paste this string to the <span style="font-weight: bold; color:rgb(143, 143, 173);">"Paste character(s) here"</span> field.
-                    Click on <span style="font-weight: bold; color:rgb(143, 143, 173);">match</span> and every single character of the string will be added to your custom keyboard.<br><br>
-                    * Use the buttons <span style="font-weight: bold">Previous</span> and <span style="font-weight: bold">Next</span> to browse through the Unicode characters.<br><br>
+                    Click on the <span style="font-weight: bold; color:rgb(143, 143, 173);">"Add Character(s)"</span> button and every single <i>unique</i> character of the string will be added to your custom keyboard.<br><br>
+                    * Use the buttons <span style="font-weight: bold">←</span> and <span style="font-weight: bold">→</span> to browse through the Unicode characters.<br><br>
                     * <span style="font-weight: bold">Click</span> on a Unicode character in the grid to <span style="font-weight: bold">add</span> it to your custom keyboard.<br><br>
                     * <span style="font-weight: bold">Remove</span> an already added character by clicking on it again in your custom keyboard.<br><br>
                     * <span style="font-weight: bold">Change the order</span> of your custom keyboard by dragging and droping a certain Unicode character to the position you like.<br><br>
+                    * The <span style="font-weight: bold">+</span> and <span style="font-weight: bold">-</span> buttons adjust the width of the keyboard rows. The default is set to 10 Unicode characters per keyboard row, but you can adjust this value to your needs.<br><br>
                     * <span style="font-weight: bold">Download</span> your custom keyboard by clicking on the button <span style="font-weight: bold; color:darkolivegreen;">Download JSON</span> and import the .json into eScriptorium.<br><br>
                 </p>
             </div>
@@ -210,7 +211,7 @@
         <div class="input-row">
             <div class="input-container">
                 <input type="text" id="char-input" class="match-field" placeholder="Paste character(s) here">
-                <button class="button" onclick="matchCharacter()">Match</button>
+                <button class="button" onclick="matchCharacter()">Add Character(s)</button>
                 <input type="text" id="name-input" class="search-field" placeholder="Search by Unicode name" oninput="liveSearchUnicodeName()">
                 <div id="suggestions"></div>
                 <div class="dropdown-container">
@@ -236,7 +237,7 @@
             let currentPage = 0;
             let rowLimit = 10;
             let selectedCategory = ''; 
-            const pageSize = 40;
+            const pageSize = 48;
             const unicodeGrid = document.getElementById('unicode-grid');
             const characterGrid = document.getElementById('character-grid');
 
@@ -317,7 +318,7 @@
                         unicodeGrid.innerHTML = '';
 
                         // Set the CSS grid template columns to ensure 10 columns
-                        unicodeGrid.style.gridTemplateColumns = `repeat(10, 50px)`;
+                        unicodeGrid.style.gridTemplateColumns = `repeat(12, 50px)`;
 
                         data.forEach(item => {
                             const cell = document.createElement('div');
@@ -356,20 +357,49 @@
             }
 
             function downloadJson() {
-                fetch('/download_characters')
-                    .then(response => response.json())
-                    .then(data => {
-                        const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-                        const url = URL.createObjectURL(blob);
-                        const a = document.createElement('a');
-                        a.href = url;
-                        a.download = 'my_keyboard.json';
-                        document.body.appendChild(a);
-                        a.click();
-                        document.body.removeChild(a);
-                        URL.revokeObjectURL(url);
-                    });
+                // First, recalculate rows and columns
+                fetch('/recalculate_rows_columns', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                }).then(response => response.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        // After recalculating, proceed to download the JSON
+                        fetch('/download_characters')
+                            .then(response => response.json())
+                            .then(data => {
+                                const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+                                const url = URL.createObjectURL(blob);
+                                const a = document.createElement('a');
+                                a.href = url;
+                                a.download = 'my_keyboard.json';
+                                document.body.appendChild(a);
+                                a.click();
+                                document.body.removeChild(a);
+                                URL.revokeObjectURL(url);
+                            });
+                    }
+                });
             }
+
+
+            // function downloadJson() {
+            //     fetch('/download_characters')
+            //         .then(response => response.json())
+            //         .then(data => {
+            //             const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            //             const url = URL.createObjectURL(blob);
+            //             const a = document.createElement('a');
+            //             a.href = url;
+            //             a.download = 'my_keyboard.json';
+            //             document.body.appendChild(a);
+            //             a.click();
+            //             document.body.removeChild(a);
+            //             URL.revokeObjectURL(url);
+            //         });
+            // }
 
             function clearCharacters() {
                 fetch('/clear_characters', {
