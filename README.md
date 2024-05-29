@@ -1,8 +1,8 @@
 # Keyboard Builder for eScriptorium ⌨️
-This `flask` app allows you to build **virtual keyboards** for [eScriptorium](https://en.wikipedia.org/wiki/EScriptorium) with ease.<br><br>It's especially useful if you want to transition from another transcription client with an already existing virtual keyboard to eScriptorium, without having to manually add all your custom Unicode characters again (*which is a nuissance!*).
+This `flask` app allows you to build **virtual keyboards** for [eScriptorium](https://en.wikipedia.org/wiki/EScriptorium) with ease.<br><br>It's especially useful if you want to transition from another transcription client with an already existing virtual keyboard to eScriptorium, without having to manually add all your custom Unicode characters again (*which is a drag!*).
 
 The Keyboard Builder comes with a **set of useful features**:
-* `Junicode2` as standard font for displaying the widest range of Unicodes possible. [Junicode Font](https://psb1558.github.io/Junicode-font/)
+* `Junicode2` as standard font for displaying the widest range of Unicodes possible. [↗ Junicode Font by Peter S. Baker](https://psb1558.github.io/Junicode-font/)
 * `Filter` by Unicode categories (e.g. `Greek and Coptic`, `Hebrew`, `Latin Extended-A` ...) for easier access to the Unicode range you have in mind
 * `Search` for a specific Unicode by name (e.g. `"Greek Capital Letter Omega"`). You don't have to memorize the complete name, a part is enough (e.g. `Greek Cap`) ... 
 * `Paste` a **single** Unicode character you copied elsewhere and add it to your keyboard
@@ -17,6 +17,7 @@ The Keyboard Builder comes with a **set of useful features**:
 1. [Requirements](#requirements)
 2. [Installation](#installation)
 3. [Usage](#usage)
+4. [Acknowledgement](#acknowledgement)
 
 ## Requirements
 - Python 3.11 and above
@@ -59,3 +60,6 @@ If you want to import an already existing virtual keyboard (e.g. in *Transkribus
 2. Copy the resulting string (e.g. `£q«±²ſœē∓ↄ`) 
 3. Paste this string to the "Paste character(s) here" field of the Keyboard Builder.
 4. Click on the "Add Character(s)" button and every single unique character of the string will be added to your custom keyboard.
+
+## Acknowledgement
+This app was built with help from [OpenAI's GPT-4](https://chatgpt.com/). [Junicode Font by Peter S. Baker](https://psb1558.github.io/Junicode-font/) is licensed under Open Font License, v. 1.1.
