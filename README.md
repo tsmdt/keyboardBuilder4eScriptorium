@@ -8,7 +8,7 @@ The Keyboard Builder comes with a **set of useful features**:
 * `Paste` a **single** Unicode character you copied elsewhere and add it to your keyboard
 * `Paste` a **string** of Unicode characters (e.g. `£q«±²ſē∓ↄ`) and add each individual character to your keyboard automatically
 * Adjust the `order` of your keyboard via **drag** and **drop**
-* Adjust the `layout` of your keyboard by increasing or decreasing the  column width of your grid (i.e. you can design a keyboard layout in a `2 x 10` grid or `4 x 5` and so forth...)
+* Adjust the `layout` of your keyboard by increasing or decreasing the  column / row count of your grid (i.e. you can design a keyboard layout in a `2 x 10` grid or `4 x 5` and so forth...)
 * `Download` your keyboard as an eScriptorium compatible `.json` file
 
 <img width="100%" alt="keyboard_builder" src="https://github.com/th-schmidt/keyboardBuilder4eScriptorium/assets/86777463/b9fc53c3-edbb-4231-82c2-8f59d8c5467b">
