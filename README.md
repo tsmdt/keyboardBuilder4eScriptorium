@@ -14,7 +14,6 @@ The Keyboard Builder comes with a **set of useful functions**:
 ## Table of Contents
 1. [Requirements](#requirements)
 2. [Installation](#installation)
-3. Usage
 
 ## Requirements
 - Python 3.11 and above
