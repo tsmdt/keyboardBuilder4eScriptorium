@@ -16,7 +16,7 @@ The Keyboard Builder comes with a **set of useful features**:
 ## Table of Contents
 1. [Requirements](#requirements)
 2. [Installation](#installation)
-3. Usge
+3. [Usage](#usage)
 
 ## Requirements
 - Python 3.11 and above
