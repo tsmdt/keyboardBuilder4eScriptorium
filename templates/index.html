@@ -384,23 +384,6 @@
                 });
             }
 
-
-            // function downloadJson() {
-            //     fetch('/download_characters')
-            //         .then(response => response.json())
-            //         .then(data => {
-            //             const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-            //             const url = URL.createObjectURL(blob);
-            //             const a = document.createElement('a');
-            //             a.href = url;
-            //             a.download = 'my_keyboard.json';
-            //             document.body.appendChild(a);
-            //             a.click();
-            //             document.body.removeChild(a);
-            //             URL.revokeObjectURL(url);
-            //         });
-            // }
-
             function clearCharacters() {
                 fetch('/clear_characters', {
                     method: 'POST'
