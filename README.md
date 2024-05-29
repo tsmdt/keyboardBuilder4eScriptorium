@@ -1,5 +1,5 @@
 # Keyboard Builder for eScriptorium ⌨️
-This `flask` app allows you to build **virtual keyboards** for [eScriptorium](https://en.wikipedia.org/wiki/EScriptorium) with ease.<br><br>It's especially useful if you want to transition from another transcription client with an already existing virtual keyboard to eScriptorium, without having to manually add all your custom Unicode characters again (*which is a drag!*).
+This `flask` app allows you to build **virtual keyboards** for [eScriptorium](https://en.wikipedia.org/wiki/EScriptorium) with ease.<br><br>It's also useful if you want to transition from another transcription client with an already existing virtual keyboard, without having to manually add all your custom Unicode characters again (*which is a drag!*).
 
 The Keyboard Builder comes with a **set of useful features**:
 * `Junicode2` as standard font for displaying the widest range of Unicodes possible. [↗ Junicode Font by Peter S. Baker](https://psb1558.github.io/Junicode-font/)
