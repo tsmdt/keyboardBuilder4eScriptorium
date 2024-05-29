@@ -4,7 +4,7 @@ This `flask` app allows you to build **virtual keyboards** for [eScriptorium](ht
 The Keyboard Builder comes with a **set of useful features**:
 * `Junicode2` as standard font for displaying the widest range of Unicodes possible. [Junicode Font](https://psb1558.github.io/Junicode-font/)
 * `Filter` by Unicode categories (e.g. `Greek and Coptic`, `Hebrew`, `Latin Extended-A` ...) for easier access to the Unicode range you have in mind
-* `Search` for a specific Unicode by name (e.g. `"Greek Capital Letter Omega"`). You don't have to memorize the complete name, a certain part is enough (e.g. `Greek Cap`) ... 😉
+* `Search` for a specific Unicode by name (e.g. `"Greek Capital Letter Omega"`). You don't have to memorize the complete name, a part is enough (e.g. `Greek Cap`) ... 
 * `Paste` a **single** Unicode character you copied elsewhere and add it to your keyboard
 * `Paste` a **string** of Unicode characters (e.g. `£q«±²ſē∓ↄ`) and add each individual character to your keyboard
 * Adjust the `order` of your keyboard via **drag** and **drop**
