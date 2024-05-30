@@ -167,7 +167,24 @@ unicode_category_ranges = {
     "Small Form Variants": (0xFE50, 0xFE6F),
     "Arabic Presentation Forms-B": (0xFE70, 0xFEFF),
     "Halfwidth and Fullwidth Forms": (0xFF00, 0xFFEF),
-    "Specials": (0xFFF0, 0xFFFF)
+    "Specials": (0xFFF0, 0xFFFF),
+    "Linear B Syllabary": (0x10000, 0x1007F),
+    "Linear B Ideograms": (0x10080, 0x100FF),
+    "Aegean Numbers": (0x10100, 0x1013F),
+    "Old Italic": (0x10300, 0x1032F),
+    "Gothic": (0x10330, 0x1034F),
+    "Ugaritic": (0x10380, 0x1039F),
+    "Deseret": (0x10400, 0x1044F),
+    "Shavian": (0x10450, 0x1047F),
+    "Osmanya": (0x10480, 0x104AF),
+    "Cypriot Syllabary": (0x10800, 0x1083F),
+    "Byzantine Musical Symbols": (0x1D000, 0x1D0FF),
+    "Musical Symbols": (0x1D100, 0x1D1FF),
+    "Tai Xuan Jing Symbols": (0x1D300, 0x1D35F),
+    "Mathematical Alphanumeric Symbols": (0x1D400, 0x1D7FF),
+    "CJK Unified Ideographs Extension B": (0x20000, 0x2A6DF),
+    "CJK Compatibility Ideographs Supplement": (0x2F800, 0x2FA1F),
+    "Tags": (0xE0000, 0xE007F),
 }
 
 def get_unicode_characters(start, limit):
@@ -384,7 +401,7 @@ def download_characters():
     data = request.json
     keyboard_name = data.get('keyboard_name', 'my_keyboard')  # Get the keyboard name from the request
     custom_characters = session.get('custom_characters', [])
-
+    
     response = {
         "version": "0.1",
         "author": "Virtual Keyboard Builder for eScriptorium v0.1",
