@@ -62,4 +62,4 @@ If you want to import an already existing virtual keyboard (e.g. in *Transkribus
 4. Click on the "Add Character(s)" button and every single unique character of the string will be added to your custom keyboard.
 
 ## Acknowledgement
-This app was built with help from [OpenAI's GPT-4o](https://chatgpt.com/). [Junicode Font by Peter S. Baker](https://psb1558.github.io/Junicode-font/) is licensed under Open Font License, v. 1.1.
+This app was built with help from [OpenAI's GPT-4o](https://chatgpt.com/) and uses [Junicode Font by Peter S. Baker](https://psb1558.github.io/Junicode-font/), licensed under Open Font License, v. 1.1.
