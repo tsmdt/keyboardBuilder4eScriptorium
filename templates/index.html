@@ -53,16 +53,28 @@
 
         .character-cell {
             font-family: 'Junicode2', Arial, sans-serif;
-            border: 1px solid #000;
+            border: 1px solid rgb(203, 192, 170);
             background-color:floralwhite;
             text-align: center;
             line-height: 50px;
             cursor: pointer;
-            font-size: 24px;
+            font-size: 22px;
+            border-radius: 5px;
+        }
+
+        .character-cell:hover {
+            border: 1px solid rgb(203, 192, 170);
+            background-color:rgb(248, 233, 201);
         }
 
         .selected-character {
             background-color:greenyellow;
+            border: 1px solid rgb(142, 212, 38);
+        }
+
+        .selected-character:hover {
+            background-color:rgb(134, 223, 1);
+            border: 1px solid rgb(142, 212, 38);
         }
 
         .button {
@@ -75,6 +87,11 @@
             border-radius: 5px;
             margin-right: 5px;
             margin-left: 5px;
+        }
+
+        .button:hover {
+            background-color:rgb(57, 75, 26);
+            color: white;
         }
 
         .button-container {
@@ -103,7 +120,7 @@
             color: #000000a4;
             padding: 10px;
             font-size: 16px;
-            width: 180px;
+            width: 200px;
             border-radius: 5px;
             background-color:lavender;
             border: 0;
@@ -112,7 +129,7 @@
         .search-field {
             padding: 10px;
             font-size: 16px;
-            width: 180px;
+            width: 200px;
             border-radius: 5px;
             background-color:gold;
             border: 0;
@@ -156,17 +173,26 @@
             z-index: 1000; 
         }
 
+        .help-link {
+            font-family: 'Junicode2', Arial, sans-serif;
+            font-size: 24px;
+            display: inline-block;
+            margin-left: 5px;
+            cursor: pointer;
+            color: blue;
+        }
+
         .expandable-text {
             margin-bottom: 20px;
-            text-align: center; /* Center the text summary */
+            text-align: center;
         }
 
         .expandable-text-summary {
             margin-top: 20px;
             font-weight: bold;
-            cursor: pointer;
             font-size: 32px;
             color: #007BFF;
+            position: inline-block;
         }
 
         .expandable-text-content {
@@ -174,7 +200,7 @@
             line-height: 18pt;
             font-size: 15px;
             display: none;
-            max-width: 620px;
+            max-width: 700px;
             margin-top: 10px;
             margin-left: auto;
             margin-right: auto;
@@ -182,14 +208,23 @@
         }
 
         .expandable-text.open .expandable-text-content {
-            display:block;
+            display: block;
+            position: absolute;
+            background: white;
+            border: 1px solid lightgray;
+            z-index: 1000;
+            margin-left: 30px;
+            padding: 20px;
         }
     </style>
 </head>
 <body>
     <div class="content-container">
         <div class="expandable-text" id="readme">
-            <div class="expandable-text-summary" onclick="toggleReadme()">Virtual Keyboard Builder for eScriptorium</div>
+            <div class="expandable-text-summary"
+                <h1>Virtual Keyboard Builder for eScriptorium</h1>
+                <div class="help-link" onclick="toggleReadme()">🛟</div>
+            </div>
             <div class="expandable-text-content">
                 <p>
                     This app allows you to build virtual keyboards for <a href="https://en.wikipedia.org/wiki/EScriptorium" target="_blank">eScriptorium</a>.<br><br>
@@ -212,7 +247,7 @@
             <div class="input-container">
                 <input type="text" id="char-input" class="match-field" placeholder="Paste character(s) here">
                 <button class="button" onclick="matchCharacter()">Add Character(s)</button>
-                <input type="text" id="name-input" class="search-field" placeholder="Search by Unicode name" oninput="liveSearchUnicodeName()">
+                <input type="text" id="name-input" class="search-field" placeholder="🔎 Search by Unicode name" oninput="liveSearchUnicodeName()">
                 <div id="suggestions"></div>
                 <div class="dropdown-container">
                     <select id="category-select" class="category-dropdown" onchange="filterByCategory()"></select>
@@ -366,20 +401,32 @@
                 }).then(response => response.json())
                 .then(data => {
                     if (data.status === 'success') {
-                        // After recalculating, proceed to download the JSON
-                        fetch('/download_characters')
-                            .then(response => response.json())
-                            .then(data => {
-                                const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-                                const url = URL.createObjectURL(blob);
-                                const a = document.createElement('a');
-                                a.href = url;
-                                a.download = 'my_keyboard.json';
-                                document.body.appendChild(a);
-                                a.click();
-                                document.body.removeChild(a);
-                                URL.revokeObjectURL(url);
-                            });
+                        // Prompt the user for a keyboard name
+                        let keyboardName = prompt("Please enter a name for your keyboard:", "my_keyboard");
+                        if (keyboardName === null || keyboardName.trim() === "") {
+                            keyboardName = "my_keyboard"; // Default name if the user cancels or leaves it empty
+                        }
+
+                        // After recalculating, send the name and proceed to download the JSON
+                        fetch('/download_characters', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({ keyboard_name: keyboardName })
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+                            const url = URL.createObjectURL(blob);
+                            const a = document.createElement('a');
+                            a.href = url;
+                            a.download = `${keyboardName}.json`;
+                            document.body.appendChild(a);
+                            a.click();
+                            document.body.removeChild(a);
+                            URL.revokeObjectURL(url);
+                        });
                     }
                 });
             }

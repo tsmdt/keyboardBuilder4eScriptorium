@@ -379,16 +379,19 @@ def recalculate_rows_columns():
 
     return jsonify({"status": "success"})
 
-@app.route('/download_characters', methods=['GET'])
+@app.route('/download_characters', methods=['POST'])
 def download_characters():
+    data = request.json
+    keyboard_name = data.get('keyboard_name', 'my_keyboard')  # Get the keyboard name from the request
     custom_characters = session.get('custom_characters', [])
-    json_data = {
+
+    response = {
         "version": "0.1",
-        "name": "my_keyboard",
         "author": "Virtual Keyboard Builder for eScriptorium v0.1",
+        "name": keyboard_name,  # Include the keyboard name in the response
         "characters": custom_characters
-        }
-    return jsonify(json_data)
+    }
+    return jsonify(response)
 
 if __name__ == '__main__':
     app.run(debug=True)
