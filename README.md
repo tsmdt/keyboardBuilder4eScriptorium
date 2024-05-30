@@ -51,7 +51,7 @@ You can access the app in your browser: `http://127.0.0.1:5000`
 
 ## Usage
 ### User guide
-You can find a detailed user guide by clicking the blue **title heading** in the app.
+You can find a detailed user guide by clicking on the **lifebelt icon** 🛟 next to the heading.
 
 ### Import an existing virtual keyboard 
 If you want to import an already existing virtual keyboard (e.g. in *Transkribus*) to eScriptorium you can use the Keyboard Builder like this: 
