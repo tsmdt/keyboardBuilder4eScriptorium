@@ -1,14 +1,14 @@
 # Keyboard Builder for eScriptorium ⌨️
-This `flask` app allows you to build **virtual keyboards** for [eScriptorium](https://en.wikipedia.org/wiki/EScriptorium) with ease.<br><br>It's especially useful if you want to transition from another transcription client with an already existing virtual keyboard to eScriptorium, without having to manually add all your custom Unicode characters again (*which is a drag!*).
+This `flask` app allows you to build **virtual keyboards** for [eScriptorium](https://en.wikipedia.org/wiki/EScriptorium) with ease.<br><br>It's also useful if you want to transition from another transcription client with an already existing virtual keyboard, without having to manually add all your custom Unicode characters again (*which is a drag!*).
 
 The Keyboard Builder comes with a **set of useful features**:
 * `Junicode2` as standard font for displaying the widest range of Unicodes possible. [↗ Junicode Font by Peter S. Baker](https://psb1558.github.io/Junicode-font/)
 * `Filter` by Unicode categories (e.g. `Greek and Coptic`, `Hebrew`, `Latin Extended-A` ...) for easier access to the Unicode range you have in mind
 * `Search` for a specific Unicode by name (e.g. `"Greek Capital Letter Omega"`). You don't have to memorize the complete name, a part is enough (e.g. `Greek Cap`) ... 
 * `Paste` a **single** Unicode character you copied elsewhere and add it to your keyboard
-* `Paste` a **string** of Unicode characters (e.g. `£q«±²ſē∓ↄ`) and add each individual character to your keyboard
+* `Paste` a **string** of Unicode characters (e.g. `£q«±²ſē∓ↄ`) and add each individual character to your keyboard automatically
 * Adjust the `order` of your keyboard via **drag** and **drop**
-* Adjust the `layout` of your keyboard by increasing or decreasing the  column width of your grid (i.e. you can design a keyboard layout in a `2 x 10` grid or `4 x 5` and so forth...)
+* Adjust the `layout` of your keyboard by increasing or decreasing the  column / row count of your grid (i.e. you can design a keyboard layout in a `2 x 10` grid or `4 x 5` and so forth...)
 * `Download` your keyboard as an eScriptorium compatible `.json` file
 
 <img width="100%" alt="keyboard_builder" src="https://github.com/th-schmidt/keyboardBuilder4eScriptorium/assets/86777463/b9fc53c3-edbb-4231-82c2-8f59d8c5467b">
