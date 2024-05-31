@@ -33,7 +33,7 @@ cd keyboardBuilder4eScriptorium
 ```
 #### 3. Create a Python virtual environment
 ```python
-python3.11 -m venv venv
+python -m venv venv
 ```
 #### 4. Activate your virtual environment
 ```shell
