@@ -20,7 +20,7 @@ The Keyboard Builder comes with a **set of useful features**:
 4. [Acknowledgement](#acknowledgement)
 
 ## Requirements
-- Python 3.11 and above
+- Python 3.9 and above
 
 ## Installation
 #### 1. Clone this repository
