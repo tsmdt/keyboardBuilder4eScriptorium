@@ -168,9 +168,9 @@
             background: gold;
             max-height: 200px;
             overflow-y: auto;
-            margin-top: 260px;
-            margin-left: 344px;
-            width: 60%; 
+            margin-top: 250px;
+            margin-left: 455px;
+            width: 55%; 
             z-index: 1000; 
         }
 
@@ -192,7 +192,7 @@
             margin-top: 20px;
             font-weight: bold;
             font-size: 32px;
-            color:dodgerblue;
+            color: rgb(124, 98, 33);
             position: inline-block;
         }
 
@@ -214,7 +214,7 @@
             background: white;
             border: 1px solid lightgray;
             z-index: 1000;
-            margin-left: 30px;
+            margin-left: 37px;
             padding: 20px;
         }
     </style>
@@ -353,7 +353,6 @@
                         const unicodeGrid = document.getElementById('unicode-grid');
                         unicodeGrid.innerHTML = '';
 
-                        // Set the CSS grid template columns to ensure 10 columns
                         unicodeGrid.style.gridTemplateColumns = `repeat(12, 50px)`;
 
                         data.forEach(item => {
