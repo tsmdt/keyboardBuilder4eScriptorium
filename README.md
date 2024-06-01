@@ -1,7 +1,7 @@
 # Keyboard Builder for eScriptorium ⌨️
 This browser app let's you build **virtual keyboards** for [eScriptorium](https://en.wikipedia.org/wiki/EScriptorium) with ease.<br><br>It's also useful if you want to transition from another transcription client with an already existing virtual keyboard, without having to manually add all your custom Unicode characters again (*which is a drag!*).
 
-The Keyboard Builder comes with a **set of useful features**:
+**Features**:
 * `Junicode2` as standard font for displaying a wide range of Unicodes. [↗ Junicode Font by Peter S. Baker](https://psb1558.github.io/Junicode-font/)
 * `Filter` by Unicode categories (e.g. `Greek and Coptic`, `Hebrew`, `Latin Extended-A` ...) for easier access to the Unicode range you have in mind
 * `Search` for a specific Unicode by name (e.g. `"Greek Capital Letter Omega"`). You don't have to memorize the complete name, a part is enough (e.g. `Greek Cap`) ... 
