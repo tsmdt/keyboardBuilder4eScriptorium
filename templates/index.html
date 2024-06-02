@@ -205,7 +205,6 @@
         .expandable-text-summary {
             margin-top: 20px;
             font-weight: bold;
-            font-size: 32px;
             color: rgb(16, 68, 163);
             position: inline-block;
         }
@@ -216,7 +215,7 @@
             font-size: 15px;
             display: none;
             max-width: 700px;
-            margin-top: 10px;
+            margin-top: -20px;
             margin-left: auto;
             margin-right: auto;
             text-align: center;
@@ -234,11 +233,11 @@
     </style>
 </head>
 <body>
+    <div id="tooltip" class="tooltip"></div>   
     <div class="content-container">
         <div class="expandable-text" id="readme">
-            <div class="expandable-text-summary"
-                <h1>Virtual Keyboard Builder for eScriptorium</h1>
-                <div class="help-link" onclick="toggleReadme()">🛟</div>
+            <div class="expandable-text-summary">
+                <h1>Virtual Keyboard Builder for eScriptorium <span class="help-link" alt-text="click for help" onclick="toggleReadme()">🛟</span></h1>
             </div>
             <div class="expandable-text-content">
                 <p>
@@ -280,8 +279,7 @@
             <button class="button" onclick="increaseLimit()">+</button>
             <button class="button" onclick="decreaseLimit()">-</button>
             <button class="button" onclick="downloadJson()">Download JSON</button>
-        </div>
-        <div id="tooltip" class="tooltip"></div>        
+        </div>     
         <script>
             let row = 0;
             let column = 0;
@@ -302,6 +300,13 @@
                 tooltip.textContent = capitalize(text);
                 tooltip.style.display = 'block';
                 moveTooltip(event); // Position tooltip immediately
+            }
+
+            function initializeHelpLinkTooltip() {
+                const helpLink = document.querySelector('.help-link');
+                helpLink.addEventListener('mouseover', (e) => showTooltip(e, helpLink.getAttribute('alt-text')));
+                helpLink.addEventListener('mousemove', (e) => moveTooltip(e));
+                helpLink.addEventListener('mouseout', hideTooltip);
             }
 
             function moveTooltip(event) {
@@ -406,6 +411,11 @@
                             cell.addEventListener('mouseover', (e) => showTooltip(e, item.name));
                             cell.addEventListener('mousemove', (e) => moveTooltip(e));
                             cell.addEventListener('mouseout', hideTooltip);
+
+                            const helpLink = document.querySelector('.help-link');
+                            helpLink.addEventListener('mouseover', (e) => showTooltip(e, helpLink.getAttribute('alt-text')));
+                            helpLink.addEventListener('mousemove', (e) => moveTooltip(e));
+                            helpLink.addEventListener('mouseout', hideTooltip);
 
                             unicodeGrid.appendChild(cell);
                         });
