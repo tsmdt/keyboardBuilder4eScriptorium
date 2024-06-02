@@ -73,6 +73,7 @@ def get_unicode_categories():
 def add_character():
     data = request.json
     character = data.get('character')
+    name = unicodedata.name(character)
     row = data.get('row')
     column = data.get('column')
 
@@ -82,7 +83,8 @@ def add_character():
     session['custom_characters'].append({
         'character': character,
         'row': row,
-        'column': column
+        'column': column,
+        'name': name
     })
 
     session.modified = True  # Ensure session changes are saved
@@ -102,7 +104,6 @@ def remove_character():
         if char_obj["character"] != character
     ]
 
-    # Update the session with the new list of characters
     session['custom_characters'] = updated_characters
     session.modified = True  # Ensure session changes are saved
 
@@ -144,10 +145,10 @@ def match_character():
         custom_characters.append({
             'character': char,
             'row': 0,
-            'column': 0
+            'column': 0,
+            'name': unicodedata.name(char)
         })
 
-    # Get the current row limit from the session
     row_limit = session.get('row_limit', 10)
 
     # Recalculate rows and columns
@@ -225,7 +226,15 @@ def download_characters():
         "version": "0.1",
         "author": "Virtual Keyboard Builder for eScriptorium v0.1",
         "name": keyboard_name,  # Include the keyboard name in the response
-        "characters": custom_characters
+        "characters": 
+            [
+                {
+                    "character": char['character'],
+                    "row": char['row'],
+                    "column": char['column']
+                }
+                for char in custom_characters
+            ]
     }
     return jsonify(response)
 

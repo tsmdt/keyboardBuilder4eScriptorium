@@ -60,6 +60,7 @@
             cursor: pointer;
             font-size: 22px;
             border-radius: 5px;
+            position: relative;
         }
 
         .character-cell:hover {
@@ -183,6 +184,19 @@
             color: blue;
         }
 
+        .tooltip {
+            font-family: Helvetica, Arial, sans-serif;
+            font-size: 16px;
+            position: absolute;
+            background-color: coral;
+            color: #fff;
+            padding: 5px;
+            border-radius: 5px;
+            display: none;
+            z-index: 1000;
+            white-space: nowrap;
+        }
+
         .expandable-text {
             margin-bottom: 20px;
             text-align: center;
@@ -266,7 +280,8 @@
             <button class="button" onclick="increaseLimit()">+</button>
             <button class="button" onclick="decreaseLimit()">-</button>
             <button class="button" onclick="downloadJson()">Download JSON</button>
-        </div>        
+        </div>
+        <div id="tooltip" class="tooltip"></div>        
         <script>
             let row = 0;
             let column = 0;
@@ -276,6 +291,31 @@
             const pageSize = 48;
             const unicodeGrid = document.getElementById('unicode-grid');
             const characterGrid = document.getElementById('character-grid');
+
+            function capitalize(text) {
+                text = text.toLowerCase();
+                return text.replace(/\b\w/g, char => char.toUpperCase());
+            }
+
+            function showTooltip(event, text) {
+                const tooltip = document.getElementById('tooltip');
+                tooltip.textContent = capitalize(text);
+                tooltip.style.display = 'block';
+                moveTooltip(event); // Position tooltip immediately
+            }
+
+            function moveTooltip(event) {
+                const tooltip = document.getElementById('tooltip');
+                const offsetX = 10; 
+                const offsetY = 10; 
+                tooltip.style.left = (event.pageX + offsetX) + 'px';
+                tooltip.style.top = (event.pageY + offsetY) + 'px';
+            }
+
+            function hideTooltip() {
+                const tooltip = document.getElementById('tooltip');
+                tooltip.style.display = 'none';
+            }
 
             function toggleReadme() {
                 const readme = document.getElementById('readme');
@@ -358,9 +398,15 @@
                         data.forEach(item => {
                             const cell = document.createElement('div');
                             cell.className = 'character-cell';
-                            cell.textContent = item.character; // Assuming each item has a 'character' property
-                            cell.title = item.name; // Set the title attribute for the tooltip
+                            cell.textContent = item.character; 
+                            cell.setAttribute('data-tooltip', item.name);
                             cell.onclick = () => addCharacter(item.character);
+
+                            // Add event listeners for showing and hiding tooltips
+                            cell.addEventListener('mouseover', (e) => showTooltip(e, item.name));
+                            cell.addEventListener('mousemove', (e) => moveTooltip(e));
+                            cell.addEventListener('mouseout', hideTooltip);
+
                             unicodeGrid.appendChild(cell);
                         });
                     });
@@ -381,11 +427,18 @@
                             cell.className = 'character-cell selected-character';
                             cell.textContent = charObj.character;
                             cell.id = `char-${index}`;
+                            cell.setAttribute('data-tooltip', charObj.name);
                             cell.draggable = true;
                             cell.ondragstart = drag;
                             cell.ondragover = allowDrop;
                             cell.ondrop = drop;
                             cell.onclick = () => removeCharacter(charObj.character);
+
+                            // Add event listeners for showing and hiding tooltips
+                            cell.addEventListener('mouseover', (e) => showTooltip(e, charObj.name));
+                            cell.addEventListener('mousemove', (e) => moveTooltip(e));
+                            cell.addEventListener('mouseout', hideTooltip);
+
                             characterGrid.appendChild(cell);
                         });
                     });
