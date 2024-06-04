@@ -1,5 +1,5 @@
 # Keyboard Builder for eScriptorium ⌨️
-This browser app let's you build **virtual keyboards** for [eScriptorium](https://en.wikipedia.org/wiki/EScriptorium) with ease.<br><br>It's also useful if you want to transition from another transcription client with an already existing virtual keyboard, without having to manually add all your custom Unicode characters again (*which is a drag!*).
+This browser app lets you build **virtual keyboards** for [eScriptorium](https://en.wikipedia.org/wiki/EScriptorium) with ease.<br><br>It's also useful if you want to transition from another transcription client with an already existing virtual keyboard, without having to manually add all your custom Unicode characters again (*which is a drag!*).
 
 **Features**:
 * `Junicode2` as standard font for displaying a wide range of Unicodes. [↗ Junicode Font by Peter S. Baker](https://psb1558.github.io/Junicode-font/)
