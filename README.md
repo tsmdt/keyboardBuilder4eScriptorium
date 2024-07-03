@@ -45,12 +45,15 @@ pip install .
 ```
 #### 6. Run the app
 ```
-keybuilder --help
+>>> keybuilder --help
+Usage: keybuilder [OPTIONS]
 
   Run the Keyboard Builder 4 eScriptorium web application server on the
   specified port and with the specified debug mode.
 
 Options:
+  --host TEXT     The hostname or IP address to listen on. Defaults to
+                  127.0.0.1.
   --port INTEGER  The port number on which the server will run. Default is
                   8000.
   --debug         Enable or disable debug mode. Debug mode is enabled by
