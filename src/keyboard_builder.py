@@ -1,17 +1,26 @@
 import os
+import click
 import unicodedata
 from flask import Flask, request, jsonify, session, render_template
 from src import unicode_categories as uc
 
-app = Flask(__name__)
+
+app = Flask(
+    __name__,
+    template_folder='templates',  
+    static_folder='static'
+    )
 app.secret_key = os.urandom(24)
+
 
 def get_unicode_characters(start, limit):
     return [chr(i) for i in range(start, start + limit)]
 
+
 @app.route('/')
 def index():
     return render_template('index.html')
+
 
 @app.route('/live_search_unicode_name', methods=['POST'])
 def live_search_unicode_name():
@@ -19,8 +28,10 @@ def live_search_unicode_name():
     partial_name = data.get('partial_name').lower()
     matching_names = []
 
-    for codepoint in range(0x110000):  # Unicode range limit
-        if len(matching_names) >= 100:  # Limit to 100 results
+    # Unicode range limit
+    for codepoint in range(0x110000):  
+        # Limit to 100 results
+        if len(matching_names) >= 100:  
             break
         try:
             name = unicodedata.name(chr(codepoint)).lower()
@@ -29,8 +40,8 @@ def live_search_unicode_name():
                 matching_names.append({"name": name, "character": char})
         except ValueError:
             continue
-
     return jsonify(matching_names)
+
 
 @app.route('/get_unicode_characters', methods=['GET'])
 def get_unicode_characters_endpoint():
@@ -53,7 +64,8 @@ def get_unicode_characters_endpoint():
             codepoint += 1
     else:
         codepoint = start
-        while len(unicode_chars) < limit and codepoint < 0x110000:  # Unicode range limit
+        
+        while len(unicode_chars) < limit and codepoint < 0x110000:  
             try:
                 char = chr(codepoint)
                 name = unicodedata.name(char)
@@ -64,10 +76,12 @@ def get_unicode_characters_endpoint():
 
     return jsonify(unicode_chars)
 
+
 @app.route('/get_unicode_categories', methods=['GET'])
 def get_unicode_categories():
     categories = list(uc.unicode_category_ranges.keys())
     return jsonify(categories)
+
 
 @app.route('/add_character', methods=['POST'])
 def add_character():
@@ -87,8 +101,10 @@ def add_character():
         'name': name
     })
 
-    session.modified = True  # Ensure session changes are saved
+    # Ensure session changes are saved
+    session.modified = True  
     return jsonify(session['custom_characters'])
+
 
 @app.route('/remove_character', methods=['POST'])
 def remove_character():
@@ -105,19 +121,24 @@ def remove_character():
     ]
 
     session['custom_characters'] = updated_characters
-    session.modified = True  # Ensure session changes are saved
+    
+    # Ensure session changes are saved
+    session.modified = True  
 
     return jsonify({"message": "Character removed successfully!"})
+
 
 @app.route('/get_characters', methods=['GET'])
 def get_characters():
     custom_characters = session.get('custom_characters', [])
     return jsonify({'characters': custom_characters})
 
+
 @app.route('/clear_characters', methods=['POST'])
 def clear_characters():
     session.pop('custom_characters', None)
     return jsonify({"status": "cleared"})
+
 
 @app.route('/match_character', methods=['POST'])
 def match_character():
@@ -130,7 +151,8 @@ def match_character():
     valid_characters = []
     for char in characters:
         try:
-            if char.isprintable() and char not in valid_characters:  # Check if the character is a valid Unicode character
+            # Check if the character is a valid Unicode character
+            if char.isprintable() and char not in valid_characters: 
                 valid_characters.append(char)
         except:
             continue
@@ -161,6 +183,7 @@ def match_character():
 
     return jsonify({"message": "Characters matched and added successfully!", "valid_characters": valid_characters})
 
+
 @app.route('/update_custom_order', methods=['POST'])
 def update_custom_order():
     data = request.json
@@ -169,7 +192,8 @@ def update_custom_order():
     custom_characters = session.get('custom_characters', [])
     character_dict = {char['character']: char for char in custom_characters}
 
-    row_limit = session.get('row_limit', 10)  # Get the current row limit from the session
+    # Get the current row limit from the session
+    row_limit = session.get('row_limit', 10)  
     updated_characters = []
 
     for i, char in enumerate(new_order):
@@ -183,6 +207,7 @@ def update_custom_order():
     session.modified = True
 
     return jsonify({"status": "success"})
+
 
 @app.route('/update_row_limit', methods=['POST'])
 def update_row_limit():
@@ -201,6 +226,7 @@ def update_row_limit():
     
     return jsonify({"status": "success", "row_limit": row_limit})
 
+
 @app.route('/recalculate_rows_columns', methods=['POST'])
 def recalculate_rows_columns():
     custom_characters = session.get('custom_characters', [])
@@ -216,16 +242,19 @@ def recalculate_rows_columns():
 
     return jsonify({"status": "success"})
 
+
 @app.route('/download_characters', methods=['POST'])
 def download_characters():
     data = request.json
-    keyboard_name = data.get('keyboard_name', 'my_keyboard')  # Get the keyboard name from the request
+    
+    # Get the keyboard name from the request
+    keyboard_name = data.get('keyboard_name', 'my_keyboard')
     custom_characters = session.get('custom_characters', [])
     
     response = {
         "version": "0.1",
-        "author": "Virtual Keyboard Builder for eScriptorium v0.1",
-        "name": keyboard_name,  # Include the keyboard name in the response
+        "author": "Keyboard Builder for eScriptorium v0.1",
+        "name": keyboard_name,  
         "characters": 
             [
                 {
@@ -238,6 +267,17 @@ def download_characters():
     }
     return jsonify(response)
 
+
+@click.command()
+@click.option('--port', type=int, default=8000, help='The port number on which the server will run. Default is 8000.')
+@click.option('--debug', is_flag=True, default=True, help='Enable or disable debug mode. Debug mode is enabled by default.')
+def main(port, debug):
+    """
+    Run the Keyboard Builder 4 eScriptorium web application server on the specified port and with the specified debug mode.
+    """
+    app.run(port=port, debug=debug)
+
+
 if __name__ == '__main__':
-    app.run(port=8000, debug=True)
+    main()
     

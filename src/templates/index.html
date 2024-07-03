@@ -18,10 +18,16 @@
             display: flex;
             justify-content: center;
             align-items: center;
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            width: 100%;
         }
 
         h1 {
             text-align: center;
+            font-size: 28pt;
+
         }
 
         .content-container {
@@ -53,8 +59,8 @@
 
         .character-cell {
             font-family: 'Junicode2', Arial, sans-serif;
-            border: 1px solid rgb(228, 215, 189);
-            background-color:floralwhite;
+            border: 1px solid rgb(219, 219, 219);
+            background-color: rgb(237, 237, 237);
             text-align: center;
             line-height: 50px;
             cursor: pointer;
@@ -64,35 +70,36 @@
         }
 
         .character-cell:hover {
-            border: 1px solid rgb(224, 206, 168);
-            background-color:rgb(248, 233, 201);
+            border: 1px solid rgb(219, 219, 219);
+            background-color:rgb(219, 219, 219);
         }
 
         .selected-character {
-            background-color:greenyellow;
-            border: 1px solid rgb(142, 212, 38);
+            background-color: rgb(204, 215, 233);
+            border: 1px solid rgb(179, 192, 212);
         }
 
         .selected-character:hover {
-            background-color:rgb(134, 223, 1);
-            border: 1px solid rgb(142, 212, 38);
+            background-color: rgb(179, 192, 212);
+            border: 1px solid rgb(179, 192, 212);
         }
 
         .button {
-            padding: 10px 20px;
+            border: 2px solid rgb(37, 46, 85);
+            padding: 8px 18px;
             font-size: 16px;
             cursor: pointer;
-            background-color: darkolivegreen;
+            background-color: rgb(37, 46, 85);
             color: white;
-            border: 0px;
             border-radius: 5px;
             margin-right: 5px;
             margin-left: 5px;
         }
 
         .button:hover {
-            background-color:rgb(57, 75, 26);
-            color: white;
+            border: 2px solid rgb(162, 175, 194);
+            background-color: rgb(237, 237, 237);
+            color: rgb(37, 46, 85);
         }
 
         .button-container {
@@ -118,13 +125,13 @@
         }
 
         .match-field {
-            color: #000000a4;
+            color: rgb(37, 46, 85);
             padding: 10px;
             font-size: 16px;
             width: 200px;
             border-radius: 5px;
-            background-color:lavender;
-            border: 0;
+            background-color: rgb(204, 215, 233);
+            border: 1px;
         }
 
         .search-field {
@@ -132,8 +139,8 @@
             font-size: 16px;
             width: 200px;
             border-radius: 5px;
-            background-color:gold;
-            border: 0;
+            background-color: rgb(204, 215, 233);
+            border: 1px;
             position: relative;
         }
 
@@ -148,7 +155,7 @@
             font-size: 16px;
             width: 180px;
             border-radius: 5px;
-            background-color:coral;
+            background-color: rgb(37, 46, 85);
             color: white;
         }
 
@@ -157,16 +164,16 @@
             font-size: 18px;
             padding: 5px;
             cursor: pointer;
-            border: 1px solid #ccc;
+            border: 1px solid rgb(177, 192, 215);
         }
 
         .suggestion-item:hover {
-            background-color: rgb(255, 229, 82);
+            background-color: rgb(177, 192, 215);
         }
 
         #suggestions {
             position: absolute;
-            background: gold;
+            background-color: rgb(204, 215, 233);
             max-height: 200px;
             overflow-y: auto;
             margin-top: 250px;
@@ -178,7 +185,7 @@
         .help-link {
             font-family: 'Junicode2', Arial, sans-serif;
             font-size: 24px;
-            display: inline-block;
+            display: block;
             margin-left: 5px;
             cursor: pointer;
             color: blue;
@@ -188,9 +195,9 @@
             font-family: Helvetica, Arial, sans-serif;
             font-size: 16px;
             position: absolute;
-            background-color: rgb(30, 30, 30);
+            background-color: rgb(37, 46, 85);
             color: whitesmoke;
-            padding: 5px;
+            padding: 7px;
             border-radius: 5px;
             display: none;
             z-index: 1000;
@@ -205,11 +212,12 @@
         .expandable-text-summary {
             margin-top: 20px;
             font-weight: bold;
-            color: rgb(16, 68, 163);
+            color: rgb(37, 46, 85);
             position: inline-block;
         }
 
         .expandable-text-content {
+            color: rgb(37, 46, 85);
             font-family: monospace;
             line-height: 18pt;
             font-size: 15px;
@@ -230,6 +238,22 @@
             margin-left: 37px;
             padding: 20px;
         }
+
+        .watermark {
+        position: fixed;
+        top: 20px;
+        left: 20px;
+        width: 130px;
+        opacity: 1;
+        }
+
+        .watermark:hover {
+            opacity: 0.5;
+        }
+
+        ::placeholder {
+            color: rgb(113, 119, 150);
+        }
     </style>
 </head>
 <body>
@@ -237,23 +261,26 @@
     <div class="content-container">
         <div class="expandable-text" id="readme">
             <div class="expandable-text-summary">
-                <h1>Virtual Keyboard Builder for eScriptorium <span class="help-link" alt-text="click for help" onclick="toggleReadme()">🛟</span></h1>
+                <img src="static/img/ub_logo.png" alt="Watermark" class="watermark help-link" alt-text="show / hide help" onclick="toggleReadme()">
+                <h1>Virtual Keyboard Builder for eScriptorium</h1>
             </div>
             <div class="expandable-text-content">
                 <p>
-                    This app allows you to build virtual keyboards for <a href="https://en.wikipedia.org/wiki/EScriptorium" target="_blank">eScriptorium</a>.<br><br>
-                    You can <span style="font-weight: bold">filter</span> by Unicode categories using the <span style="font-weight: bold; color:coral;">dropdown menu</span>, 
-                    <span style="font-weight: bold">search</span> for a Unicode character by <span style="font-weight: bold; color:rgb(221, 190, 16);">name</span> or simple 
-                    <span style="font-weight: bold">paste</span> and <span style="font-weight: bold; color:rgb(143, 143, 173);">add</span> a character or string of characters to your custom keyboard.<br><br>
+                    Build virtual keyboards for <a href="https://en.wikipedia.org/wiki/EScriptorium" target="_blank">eScriptorium</a> with ease... 🌞<br><br>
+                    You can <span style="font-weight: bold">filter</span> by Unicode categories using the <span style="font-weight: bold">dropdown menu</span>, 
+                    <span style="font-weight: bold">search</span> for a Unicode character by <span style="font-weight: bold">name</span> or simple 
+                    <span style="font-weight: bold">paste</span> and <span style="font-weight: bold">add</span> a character or string of characters to your custom keyboard.<br><br>
                     The latter option makes building already existing virtual keyboards (e.g. in Transkribus) especially easy: Simply paste all Unicodes of your existing keyboard in a new Transkribus document 
-                    without any whitespaces between them. Copy the resulting string (e.g. <span style="font-family: monospace; color:blue; letter-spacing: 3px;">£q«±²ſœŒē∓ↄ</span>) and paste this string to the <span style="font-weight: bold; color:rgb(143, 143, 173);">"Paste character(s) here"</span> field.
-                    Click on the <span style="font-weight: bold; color:rgb(143, 143, 173);">"Add Character(s)"</span> button and every single <i>unique</i> character of the string will be added to your custom keyboard.<br><br>
+                    without any whitespaces between them. Copy the resulting string (e.g. <span style="font-family: monospace; color:blue; letter-spacing: 3px;">£q«±²ſœŒē∓ↄ</span>) and paste this string to the <span style="font-weight: bold">"Paste character(s) here"</span> field.
+                    Click on the <span style="font-weight: bold">"Add Character(s)"</span> button and every single <i>unique</i> character of the string will be added to your custom keyboard.<br><br>
                     * Use the buttons <span style="font-weight: bold">←</span> and <span style="font-weight: bold">→</span> to browse through the Unicode characters.<br><br>
                     * <span style="font-weight: bold">Click</span> on a Unicode character in the grid to <span style="font-weight: bold">add</span> it to your custom keyboard.<br><br>
                     * <span style="font-weight: bold">Remove</span> an already added character by clicking on it again in your custom keyboard.<br><br>
                     * <span style="font-weight: bold">Change the order</span> of your custom keyboard by dragging and dropping a certain Unicode character to the position you like.<br><br>
                     * The <span style="font-weight: bold">+</span> and <span style="font-weight: bold">-</span> buttons adjust the width of the keyboard rows. The default is set to 10 Unicode characters per keyboard row, but you can adjust this value to your needs.<br><br>
-                    * <span style="font-weight: bold">Download</span> your custom keyboard by clicking on the button <span style="font-weight: bold; color:darkolivegreen;">Download JSON</span> and import the .json into eScriptorium.
+                    * <span style="font-weight: bold">Download</span> your custom keyboard by clicking on the button <span style="font-weight: bold">Download JSON</span> and import the .json into eScriptorium.
+                    <br><br>
+                    🤖 <a href="https://github.com/tsmdt/keyboardBuilder4eScriptorium" target="_blank">Find the source code on GitHub</a> 🤖
                 </p>
             </div>
         </div>
@@ -532,7 +559,7 @@
                     if (data.valid_characters.length > 0) {
                         renderSelectedCharacters(); // Re-render the updated character list
                     } else {
-                        alert('No valid characters found in the provided string.');
+                        alert('Please provide a valid string.');
                     }
                 });
             }
@@ -645,7 +672,7 @@
 
                     data.forEach(item => {
                         const suggestion = document.createElement('div');
-                        suggestion.textContent = `${item.name} (${item.character})`;
+                        suggestion.textContent = `${item.name} ${item.character}`;
                         suggestion.className = 'suggestion-item';
                         suggestion.onclick = () => {
                             addCharacter(item.character);
