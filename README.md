@@ -44,7 +44,7 @@ source venv/bin/activate
 pip install .
 ```
 #### 6. Run the app
-```python
+```
 keybuilder --help
 
   Run the Keyboard Builder 4 eScriptorium web application server on the
