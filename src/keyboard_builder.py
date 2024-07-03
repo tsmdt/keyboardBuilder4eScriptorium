@@ -7,9 +7,9 @@ from src import unicode_categories as uc
 
 app = Flask(
     __name__,
-    template_folder='templates',  
+    template_folder='templates',
     static_folder='static'
-    )
+)
 app.secret_key = os.urandom(24)
 
 
@@ -29,9 +29,9 @@ def live_search_unicode_name():
     matching_names = []
 
     # Unicode range limit
-    for codepoint in range(0x110000):  
+    for codepoint in range(0x110000):
         # Limit to 100 results
-        if len(matching_names) >= 100:  
+        if len(matching_names) >= 100:
             break
         try:
             name = unicodedata.name(chr(codepoint)).lower()
@@ -64,8 +64,8 @@ def get_unicode_characters_endpoint():
             codepoint += 1
     else:
         codepoint = start
-        
-        while len(unicode_chars) < limit and codepoint < 0x110000:  
+
+        while len(unicode_chars) < limit and codepoint < 0x110000:
             try:
                 char = chr(codepoint)
                 name = unicodedata.name(char)
@@ -102,7 +102,7 @@ def add_character():
     })
 
     # Ensure session changes are saved
-    session.modified = True  
+    session.modified = True
     return jsonify(session['custom_characters'])
 
 
@@ -121,9 +121,9 @@ def remove_character():
     ]
 
     session['custom_characters'] = updated_characters
-    
+
     # Ensure session changes are saved
-    session.modified = True  
+    session.modified = True
 
     return jsonify({"message": "Character removed successfully!"})
 
@@ -246,7 +246,7 @@ def recalculate_rows_columns():
 @app.route('/download_characters', methods=['POST'])
 def download_characters():
     data = request.json
-    
+
     # Get the keyboard name from the request
     keyboard_name = data.get('keyboard_name', 'my_keyboard')
     custom_characters = session.get('custom_characters', [])
@@ -254,8 +254,8 @@ def download_characters():
     response = {
         "version": "0.1",
         "author": "Keyboard Builder for eScriptorium v0.1",
-        "name": keyboard_name,  
-        "characters": 
+        "name": keyboard_name,
+        "characters":
             [
                 {
                     "character": char['character'],
@@ -269,13 +269,14 @@ def download_characters():
 
 
 @click.command()
+@click.option('--host', default='127.0.0.1', help='The hostname or IP address to listen on. Defaults to 127.0.0.1.')
 @click.option('--port', type=int, default=8000, help='The port number on which the server will run. Default is 8000.')
 @click.option('--debug', is_flag=True, default=True, help='Enable or disable debug mode. Debug mode is enabled by default.')
-def main(port, debug):
+def main(host, port, debug):
     """
     Run the Keyboard Builder 4 eScriptorium web application server on the specified port and with the specified debug mode.
     """
-    app.run(port=port, debug=debug)
+    app.run(host=host, port=port, debug=debug)
 
 
 if __name__ == '__main__':
