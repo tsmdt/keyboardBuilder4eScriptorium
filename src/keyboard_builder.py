@@ -152,7 +152,7 @@ def match_character():
     for char in characters:
         try:
             # Check if the character is a valid Unicode character
-            if char.isprintable() and char not in valid_characters: 
+            if char.isprintable() and char not in valid_characters:
                 valid_characters.append(char)
         except:
             continue
@@ -193,7 +193,7 @@ def update_custom_order():
     character_dict = {char['character']: char for char in custom_characters}
 
     # Get the current row limit from the session
-    row_limit = session.get('row_limit', 10)  
+    row_limit = session.get('row_limit', 10)
     updated_characters = []
 
     for i, char in enumerate(new_order):
@@ -220,10 +220,10 @@ def update_row_limit():
     for i, char_obj in enumerate(custom_characters):
         char_obj['row'] = i // row_limit
         char_obj['column'] = i % row_limit
-        
+
     session['custom_characters'] = custom_characters
     session.modified = True
-    
+
     return jsonify({"status": "success", "row_limit": row_limit})
 
 
@@ -250,7 +250,7 @@ def download_characters():
     # Get the keyboard name from the request
     keyboard_name = data.get('keyboard_name', 'my_keyboard')
     custom_characters = session.get('custom_characters', [])
-    
+
     response = {
         "version": "0.1",
         "author": "Keyboard Builder for eScriptorium v0.1",
@@ -280,4 +280,3 @@ def main(port, debug):
 
 if __name__ == '__main__':
     main()
-    
